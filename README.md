@@ -39,6 +39,8 @@ StructDiff is a single-image diffusion framework for structure-preserving genera
 Use a fresh Python 3.9 environment for training and sampling:
 
 ```bash
+conda create -n structdiff python=3.9
+conda activate structdiff
 pip install -r requirements.txt
 ```
 
@@ -115,7 +117,7 @@ For finer local control, especially on face images, use a prepared mask variant:
 python sample.py --image_name face_3.jpg --run_name face_3_pe --use_positional_encoding --sample_mode control --mask_variant face_3_mask_change0.png --control_action none
 ```
 
-This mask-variant workflow is useful for localized edits where you want to manipulate only part of the foreground rather than the full object region. In the recommended examples, mask variants are used as an alternative control input rather than being mixed with additional shift, copy, or scale transforms.
+This mask-variant workflow is useful for localized edits where you want to manipulate only part of the foreground rather than the full object region.
 
 
 ## Citation

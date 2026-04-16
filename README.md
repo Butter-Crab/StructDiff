@@ -50,8 +50,10 @@ The SAM2 mask editor uses a separate environment. The full setup and launch inst
 
 ## Documentation
 
-- [Data Guide](docs/data/README.md)
-- [Mask Tool Guide](docs/mask_tool/README.md)
+The repository keeps detailed usage notes in focused sub-guides so the top-level README can stay compact:
+
+- [Data Guide](docs/data/README.md): dataset layout, naming rules, mask conventions, and loader behavior
+- [Mask Tool Guide](docs/mask_tool/README.md): SAM2 environment setup, launch commands, UI workflow, and mask saving paths
 
 ## Default Model
 

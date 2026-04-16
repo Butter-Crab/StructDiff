@@ -20,7 +20,6 @@
   <a href="https://butter-crab.github.io/StructDiff/">Project Page</a> ·
   <a href="https://arxiv.org/pdf/2604.12575">Paper PDF</a> ·
   <a href="https://arxiv.org/abs/2604.12575">arXiv</a> ·
-  <a href="https://github.com/Butter-Crab/StructDiff">GitHub</a> ·
   <a href="https://huggingface.co/datasets/ButterCrab0122/Mulmini-NL">Dataset</a>
 </p>
 
@@ -47,38 +46,77 @@ pip install -r requirements.txt
 
 The SAM2 mask editor uses a separate environment. The full setup and launch instructions are documented in [docs/mask_tool/README.md](docs/mask_tool/README.md).
 
-## Quick Start
-
-Train the default model without positional encoding:
-
-```bash
-python main.py --image_name face_3.jpg --run_name structdiff_default
-```
-
-Sample diverse results from the default model:
-
-```bash
-python sample.py --image_name face_3.jpg --run_name structdiff_default --sample_mode diverse
-```
-
-Train with positional encoding enabled:
-
-```bash
-python main.py --image_name face_3.jpg --run_name structdiff_pe --use_positional_encoding
-```
-
-Run spatially controlled sampling with a positional-encoding checkpoint:
-
-```bash
-python sample.py --image_name face_3.jpg --run_name structdiff_pe --use_positional_encoding --sample_mode control --control_action shift
-```
-
-For detailed data layout, mask editing, and additional sampling modes, see the guides below.
-
 ## Documentation
 
 - [Data Guide](docs/data/README.md)
 - [Mask Tool Guide](docs/mask_tool/README.md)
+
+## Default Model
+
+The default StructDiff model is trained **without positional encoding**. This is the recommended starting point for diverse generation and the downstream application modes that do not require spatial control.
+
+### Training
+
+```bash
+python main.py --image_name mountains3.jpg --run_name mountains3_default
+```
+
+### Sampling
+
+Supported sampling modes for the default model:
+
+- `diverse`: default diverse single-image generation
+- `text`: text-guided generation with CLIP guidance
+- `reference`: reference-guided generation
+- `outpaint`: outpainting around an input image
+
+Example commands:
+
+```bash
+python sample.py --image_name mountains3.jpg --run_name mountains3_default --sample_mode diverse
+python sample.py --image_name mountains3.jpg --run_name mountains3_default --sample_mode text --text_input "volcano eruption"
+python sample.py --image_name mountains3.jpg --run_name mountains3_default --sample_mode reference
+python sample.py --image_name mountains3.jpg --run_name mountains3_default --sample_mode outpaint --sample_size 320,320 --outpaint_offset 32,74
+```
+
+Each sampling command assumes that the matching image-specific default checkpoint has already been trained first.
+
+## Positional-Encoding Model
+
+The PE version is trained with the paper's 3D positional encoding and is intended for spatially controllable generation.
+
+### Training
+
+```bash
+python main.py --image_name blackswan.jpg --run_name blackswan_pe --use_positional_encoding
+```
+
+### Sampling
+
+PE checkpoints are sampled in `control` mode:
+
+- `control_action none`: keep the original positional encoding and sample the source layout
+- `control_action shift`: move the controlled foreground region
+- `control_action copy_shift`: duplicate and move the foreground region
+- `control_action scale`: resize the controlled foreground region
+
+Example commands:
+
+```bash
+python sample.py --image_name blackswan.jpg --run_name blackswan_pe --use_positional_encoding --sample_mode control --control_action none
+python sample.py --image_name blackswan.jpg --run_name blackswan_pe --use_positional_encoding --sample_mode control --control_action shift --shift_x 24 --shift_y -12
+python sample.py --image_name blackswan.jpg --run_name blackswan_pe --use_positional_encoding --sample_mode control --control_action copy_shift --shift_x 40 --shift_y 0
+python sample.py --image_name blackswan.jpg --run_name blackswan_pe --use_positional_encoding --sample_mode control --control_action scale --scale_factor 0.6
+```
+
+For finer local control, especially on face images, use a prepared mask variant:
+
+```bash
+python sample.py --image_name face_3.jpg --run_name face_3_pe --use_positional_encoding --sample_mode control --mask_variant face_3_mask_change0.png --control_action none
+```
+
+This mask-variant workflow is useful for localized edits where you want to manipulate only part of the foreground rather than the full object region. In the recommended examples, mask variants are used as an alternative control input rather than being mixed with additional shift, copy, or scale transforms.
+
 
 ## Citation
 

@@ -1,0 +1,18 @@
+--extra-index-url https://download.pytorch.org/whl/cu113
+
+# Recommended Python version for the core StructDiff environment: 3.9
+# Use the CUDA 11.3 wheels so RTX 30-series GPUs such as the 3090 are supported.
+
+torch==1.11.0+cu113
+torchvision==0.12.0+cu113
+pytorch_lightning==1.5.10.post0
+torchmetrics==0.7.3
+
+numpy==1.21.2
+Pillow==9.4.0
+einops==0.6.0
+tqdm==4.64.0
+
+ftfy
+regex
+six

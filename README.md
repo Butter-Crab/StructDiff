@@ -128,7 +128,7 @@ This mask-variant workflow is useful for localized edits where you want to manip
 @article{he2026structdiff,
   title={StructDiff: A Structure-Preserving and Spatially Controllable Diffusion Model for Single-Image Generation},
   author={He, Yinxi and Liao, Kang and Lin, Chunyu and Wei, Tianyi and Zhao, Yao},
-  journal={IEEE Transactions on Multimedia},
+  journal={arXiv preprint arXiv:2604.12575},
   year={2026}
 }
 ```
